@@ -17,24 +17,9 @@ This investigation sheet helps you gather key technical information from the thr
 | Endpoint to get messages | `GET https://webexapis.com/v1/messages?roomId=<ROOM_ID>` |
 | Endpoint to send message | `POST https://webexapis.com/v1/messages` |
 | Required headers | `for authenticated Webex API requests = Authorization: Bearer <ACCESS_TOKEN>. For requests with a JSON body (e.g. sending a message): Authorization: Bearer <ACCESS_TOKEN> Content-Type: application/json` |
-| Sample full GET or POST request | `curl -X GET \
-  "https://webexapis.com/v1/messages?roomId=<ROOM_ID>" \
-  -H "Authorization: Bearer <ACCESS_TOKEN>" \
-  -H "Accept: application/json"
-
-The response looks conceptually like:
-
-{
-  "items": [
-    {
-      "id": "Y2lzY29zcGFyazovL3VzL01FU1NBR0Uv...",
-      "roomId": "Y2lzY29zcGFyazovL3VzL1JPT00v...",
-      "text": "Hello!",
-      "personId": "Y2lzY29zcGFyazovL3VzL1BFT1BMRS8...",
-      "created": "2026-10-07T09:30:00.000Z"
-    }
-  ]
-}` |
+| Sample full GET or POST request | `<img width="468" height="392" alt="image" src="https://github.com/user-attachments/assets/3b08579f-8334-4d5f-b72f-335fa3782499  <img width="357" height="188" alt="image" src="https://github.com/user-attachments/assets/cd5d23e4-f25d-4d34-9c6c-261d616716c6" />
+" />
+` |
 
 ---
 
