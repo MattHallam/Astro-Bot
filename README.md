@@ -16,8 +16,7 @@ This investigation sheet helps you gather key technical information from the thr
 | Endpoint to list rooms | `GET https://webexapis.com/v1/rooms` |
 | Endpoint to get messages | `GET https://webexapis.com/v1/messages?roomId=<ROOM_ID>` |
 | Endpoint to send message | `POST https://webexapis.com/v1/messages` |
-| Required headers | `for authenticated Webex API requests = Authorization: Bearer <ACCESS_TOKEN>
-for requests with a JSON bodu (e.g. sending a message): Authorization: Bearer <ACCESS_TOKEN>
+| Required headers | `for authenticated Webex API requests = Authorization: Bearer <ACCESS_TOKEN> for requests with a JSON body (e.g. sending a message): Authorization: Bearer <ACCESS_TOKEN>
 Content-Type: application/json` |
 | Sample full GET or POST request | `_______________________________` |
 
