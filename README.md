@@ -11,8 +11,8 @@ This investigation sheet helps you gather key technical information from the thr
 
 | Criteria | Details |
 |---------|---------|
-| API Base URL | `_______________________________` |
-| Authentication Method | `_______________________________` |
+| API Base URL | `https://webexapis.com/v1` |
+| Authentication Method | `an authorization HTTP header is used to identify the requesting user. The header must include an access token which may be personal, a bot token or an OAuth token from an integration` |
 | Endpoint to list rooms | `_______________________________` |
 | Endpoint to get messages | `_______________________________` |
 | Endpoint to send message | `_______________________________` |
