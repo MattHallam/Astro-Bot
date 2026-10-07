@@ -13,10 +13,12 @@ This investigation sheet helps you gather key technical information from the thr
 |---------|---------|
 | API Base URL | `https://webexapis.com/v1` |
 | Authentication Method | `an authorization HTTP header is used to identify the requesting user. The header must include an access token which may be personal, a bot token or an OAuth token from an integration` |
-| Endpoint to list rooms | `_______________________________` |
-| Endpoint to get messages | `_______________________________` |
-| Endpoint to send message | `_______________________________` |
-| Required headers | `_______________________________` |
+| Endpoint to list rooms | `GET https://webexapis.com/v1/rooms` |
+| Endpoint to get messages | `GET https://webexapis.com/v1/messages?roomId=<ROOM_ID>` |
+| Endpoint to send message | `POST https://webexapis.com/v1/messages` |
+| Required headers | `for authenticated Webex API requests = Authorization: Bearer <ACCESS_TOKEN>
+for requests with a JSON bodu (e.g. sending a message): Authorization: Bearer <ACCESS_TOKEN>
+Content-Type: application/json` |
 | Sample full GET or POST request | `_______________________________` |
 
 ---
