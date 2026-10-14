@@ -25,17 +25,19 @@ def get_webex_token():
         return "Bearer YOUR_WEBEX_TOKEN"
 
 def get_api_key(prompt, hardcoded_key):
-  #complete the function to get the API key from user input or use a hardcoded key
+    choice = input{f"use hard-coded {prompt}? (y/n): ").lower() #asks user if they are using a hard-coded key or not
+    return input(f"Enter your {prompt}: ")  #gets API key if not using hard-coded, 'return' sends the inputed value back to where the function is called
+    if choice == "n" else hardcoded_key #checks to see if the hard-coded key is being used or not and returns the hardcoded-key if it is
 
 # =========================
 # WEBEX FUNCTIONS
 # =========================
 def get_rooms(token):
-    url = #complete the URL to fetch rooms from Webex API
-    headers = #complete the headers dictionary to include the Authorization header with the token
-    response = #complete the request to get rooms using requests.get with the url and headers
+    url = "https://webexapis.com/v1/rooms" #webex endpoint for getting rooms
+    headers = {"Authorization": token} #tells webex which token is making the request
+    response = requests.get(url, headers=headers) #sends a GET request to webex and stores the result in 'response' which contains status code, returned data, and JSON information
 
-    if response.status_code != #complete the condition to check if the response status code is not xxx:
+    if response.status_code != 200: #!= 200 means does not equal 200, so this means if the get requests http code does not equal 200 (success) something is wrong
         print("Error fetching rooms:", response.status_code)
         return []
 
