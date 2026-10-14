@@ -46,25 +46,25 @@ def get_rooms(token):
 
 def print_rooms(rooms):
     for room in rooms:
-        print(#complete the print statement to display the room title and id)
+        print(f"{room['title']} - {room['id']}") #this displays the Astrobots room title and ID using {} brackets as placeholders due to the f string and [] brackets as a key to grab values from the words inside
 
 
 def select_room(rooms):
     while True:
-        name = input(#complete the input prompt to ask the user for the room name)
+        name = input("Enter room name: ") #enter the name of the room
         for room in rooms:
             if name.lower() in room["title"].lower():
-                print(#complete the print statement to confirm the selected room)
+                print(f"Selected room: {room['title']}") #prints the title of the room selected
                 return room["id"]
-        print(#complete the print statement to indicate that the room was not found)
+        print("Room not found, please try again") #if the name entered in 'name' dosent exit this message will be printed
 
 
 def get_latest_message(token, room_id):
-    url = #complete the URL to fetch messages from Webex API
-    params = {"roomId":#complete, "max": #complete}
-    headers = #complete the headers dictionary to include the Authorization header with the token
+    url = "https://webexapis.com/v1/messages" #webex messages API endpoint
+    params = {"roomId": room_id, "max": 1} #room_id identifies the room via its ID, to webex and '"max": 1' tells webex only return one message from the room
+    headers = {"Authorization" token} #supplies the webex access token again to webex knows who is making the request
 
-    response = requests.#complete(#complete, headers=headers, params=params)
+    response = requests.get(url, headers=headers, params=params) #sends the request to webex, params is included so webex knows the room ID and maximum number of messages
 
     if response.status_code != 200:
         return None, None
@@ -79,13 +79,13 @@ def get_latest_message(token, room_id):
 
 
 def send_message(token, room_id, message):
-    url = #complete the URL to send messages to Webex API
-    headers = #complete the headers dictionary to include the Authorization header with the token and Content-Type as application/json
+    url = "https://webexapis.com/v1/messages" #same API endpoint as 'get' but instead sending (post) rather than retrieving
+    headers = {"Authorization": token, "Content-Type": "application/jsons"} #2 headers: Authorization identifies the user, Content-type tells webex the data being sent is JSON
     data = {
         "roomId": room_id,
         "text": message
     }
-    requests.#complete(url, headers=headers, data=json.dumps(data))
+    requests.post(url, headers=headers, data=json.dumps(data)) #post is used instead of get as data is being sent, json.dumps(data) = used to convert the pyhton dictionary into JSON
 
 # =========================
 # WEATHER FUNCTIONS
