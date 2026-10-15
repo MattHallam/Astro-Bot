@@ -8,10 +8,10 @@
 # REQUIRED LIBRARIES
 # =========================
 
-import #complete the import statement to include the requests library
-import #complete the import statement to include the json library
-import #complete the import statement to include the time library
-from #complete the import statement to include the datetime library
+import requests #lets python communicate with websites and APIs
+import json #lets python language convert into JSON text so the API can understand it
+import time #makes sure the bot waits before checking Webex for new messages rather than repeatedly making requests
+from datetime import datetime
 
 # =========================
 # CONFIGURATION FUNCTIONS
@@ -91,9 +91,9 @@ def send_message(token, room_id, message):
 # WEATHER FUNCTIONS
 # =========================
 def get_city_coordinates(city, api_key):
-    url = #complete the URL to fetch city coordinates from OpenWeatherMap API
-    params = #complete the params dictionary to include the city name, limit, and the API key
-    response = requests.#complete(url, params=params)
+    url = "https://api.openweathermap.org/geo/1.0/direct" #openweathermap API endpoint (converts a city name into coordinates providing you have an API key)
+    params = {"q": city, "limit": 1, "appid": api_key} #3 params, q= city being searched for, limit= tells the API how many locations to return, appid= gives the API the key
+    response = requests.get(url, params=params) #sends the request to openweather using 'get'
 
     if response.status_code != 200:
         return None
@@ -106,20 +106,25 @@ def get_weather(city, api_key):
     location = get_city_coordinates(city, api_key)
 
     if not location:
-        return #complete the return statement to indicate that the city was not found
+        return "city not found" #if no location is found the bot will recieve this message rather than continuously giving missing coordinates
 
-    url = #complete the URL to fetch weather data from OpenWeatherMap API
-    params = #complete the params dictionary to include the latitude, longitude, units as metric, and the API key
+    url = "https://api.openweathermap.org/data/2.5/weather" #this is the API where the weather comes from
+    params = {"lat": location["lat"], "lon": location["lon"], "units": "metric", "appid": api_key} # {} create a dictionary while [] brackets look up values for the variables given
+    #lat= gets the latitude, lon= gets the longitude, units requests metric measurements, and appid gets the API key which was previously entered
 
-    response = requests.#complete(url, params=params)
+    response = requests.get(url, params=params) #sends the request to openweather using 'get'
 
     if response.status_code != 200:
-        return #complete the return statement to indicate that the wheather weather data retrieved or not
+        return "unable to retrieve weather data" #if the API dosent return status code 200 (success) the function gives this message to the bot
 
     weather = response.json()
 
     return (
-        #complete the return statement to format and return the weather information such as including city name, country, temperature, weather description, humidity, and wind speed
+        f"Weather in {weather['name']}, {weather['sys']['country']}:" #'name' gets the name of the city from a preexisting dictionary. 'sys' accesses a dictory and 'country' gives the value stored as 'country' e.g. GB for the city London
+        f"{weather['main']['temp']}°C," #'main' accesses a dictionary storing the temperature and 'temp' gets the value stored for temperature in the 'main' dictionary
+        f"{weather['weather'][0]['description']}."#works the same way, 'weather' accesses a dictionary and 'description' acceses the value but '0' gives the first item stored in the list as a list is used     
+        f"Humidity: {weather['main']['humidity']}%." #'main' accesses the same dictionary as before but 'humidity' gets the value stored for humidity in the 'main' dictionary
+        f"Wind speed: {weather['wind']['speed']} m/s" #'wind' accesses a dictionary storing the speed and 'speed' gets the value stored for speed in the 'wind' dictionary
     )
 
 # =========================
