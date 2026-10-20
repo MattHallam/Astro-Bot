@@ -131,10 +131,10 @@ def get_weather(city, api_key):
 # ISS FUNCTIONS
 # =========================
 def reverse_geocode(lat, lon, api_key):
-    url = #complete the URL to fetch reverse geocoding data from OpenWeatherMap API
-    params = #complete the params dictionary to include the latitude, longitude, limit, and the API key
+    url = "https://api.openweathermap.org/geo/1.0/reverse" #url link for reverse geocode
+    params = {"lat": lat, "lon": lon, "limit": 1, "appid": api_key} #supplies the latitude, longitude, maximum results (1), and the API key
 
-    response = requests.#complete(url, params=params)
+    response = requests.get(url, params=params) #uses a get request to get the openweathermap API to find a location near the international space station coordinates
 
     if response.status_code != 200:
         return None
@@ -144,27 +144,27 @@ def reverse_geocode(lat, lon, api_key):
 
 
 def get_iss_location(api_key):
-    url = #complete the URL to fetch ISS current location from the Open Notify API
+    url = "http://api.open-notify.org/iss-now.json" #open notify API endpoint
 
-    response = requests.#complete(#complete)
+    response = requests.get(url) #request does not have params due to no API key 
 
     if response.status_code != 200:
-        return #complete the return statement to indicate whether ISS location retrieved or not
+        return "error, Unable to retrieve ISS location"
 
     data = response.json()
 
-    lat = data[#complete][#complete]
-    lon = data[#complete][#complete]
+    lat = data["iss_position"]["latitude"]
+    lon = data["iss_position"]["longitude"] #gets the ISS latitude and longitude from the JSON data provided by the API
 
-    location = reverse_geocode(lat, lon, api_key)
+    location = reverse_geocode(lat, lon, api_key) #sends ISS coordinates to reverse-geocoding function
 
     place = "Over Ocean / No Nearby City"
 
-    if location:
-        place = #
-
+    if location: #checks if reverse geocoding has returned data
+        place = location.get("name", "Over Ocean / No Nearby City") #place = location.get("name", = gets the name of the location the ISS is in, if there is no data, over ocean/no nearby city is used
+#
     return (
-        #complete the return statement to format and return the ISS location information including latitude, longitude, and place name
+        f"ISS location: latitude {lat}, longitude {lon}. Nearby place: {place}" 
     )
 
 # =========================
