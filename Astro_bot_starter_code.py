@@ -182,7 +182,7 @@ def main():
     rooms = get_rooms(token)
 
     if not rooms:
-        print(#complete the print statement )
+        print("no webex rooms found or unable to get rooms.") #if webex cant find any rooms the program tells the user this message
         return
 
     print_rooms(rooms)
@@ -197,10 +197,10 @@ def main():
         if message_id and message_id != last_message_id:
 
             last_message_id = message_id
+ 
+            print(f"Received {message_text}") #every time the bot revieves a message this is printed to let the user know the message has been recieved
 
-            print(#complete the print statement to display the received message text)
-
-            if not message_text.startswith(#complete):
+            if not message_text.startswith("/"): #checks to see if the message sent into the bot is a command (beginning with /)
                 continue
 
             if message_text.lower() == "/help":
@@ -210,7 +210,7 @@ def main():
                     "/weather <city>\n/iss\n/help\n/quit"
                 )
 
-            elif message_text.lower().startswith(#complete):
+            elif message_text.lower().startswith("/weather"): #checks to see if the messages starts with /weather 
 
                 parts = message_text.split(maxsplit=1)
 
@@ -220,10 +220,10 @@ def main():
                     city = parts[1]
                     send_message(token, room_id, get_weather(city, weather_key))
 
-            elif message_text.lower() == "#complete":
-                send_message(token, room_id, get_iss_location(weather_key))
+            elif message_text.lower() == "/iss":
+                send_message(token, room_id, get_iss_location(weather_key)) #checks to see if the user typed /iss and if so, the bot runs 'get_iss_location(weather_key)' and sends the result to Webex
 
-            elif message_text.lower() == "#complete":
+            elif message_text.lower() == "/quit":
                 send_message(token, room_id, "AstroBot shutting down.")
                 break
 
