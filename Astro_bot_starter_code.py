@@ -62,7 +62,7 @@ def select_room(rooms):
 def get_latest_message(token, room_id):
     url = "https://webexapis.com/v1/messages" #webex messages API endpoint
     params = {"roomId": room_id, "max": 1} #room_id identifies the room via its ID, to webex and '"max": 1' tells webex only return one message from the room
-    headers = {"Authorization" token} #supplies the webex access token again to webex knows who is making the request
+    headers = {"Authorization": token} #supplies the webex access token again to webex knows who is making the request
 
     response = requests.get(url, headers=headers, params=params) #sends the request to webex, params is included so webex knows the room ID and maximum number of messages
 
