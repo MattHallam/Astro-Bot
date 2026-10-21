@@ -11,6 +11,7 @@
 import requests #lets python communicate with websites and APIs
 import json #lets python language convert into JSON text so the API can understand it
 import time #makes sure the bot waits before checking Webex for new messages rather than repeatedly making requests
+import base64 #needed as the astronomy API expects the ID and secret to be encoded for the header
 from datetime import datetime
 
 # =========================
@@ -26,9 +27,18 @@ def get_webex_token():
 
 def get_api_key(prompt, hardcoded_key):
     choice = input(f"use hard-coded {prompt}? (y/n): ").lower() #asks user if they are using a hard-coded key or not
-    return input(f"Enter your {prompt}: ")  #gets API key if not using hard-coded, 'return' sends the inputed value back to where the function is called
-    if choice == "n" else hardcoded_key #checks to see if the hard-coded key is being used or not and returns the hardcoded-key if it is
+    return input(f"Enter your {prompt}: ")  if choice == "n" else hardcoded_key 
+#gets API key if not using hard-coded, 'return' sends the inputed value back to where the function is called. checks to see if the hard-coded key is being used or not and returns the hardcoded-key if it is
 
+def get_astronomy_auth():
+    astronomy_id = 437cc773-eebf-44ab-bc13-531b37e85e12
+    astronomy_secret = input("Enter your Astronomy API secret: ")
+
+userpass = f"{astronomy_id}:{astronomy_secret}"
+auth_String = base64.b64encode(userpass.encode()).decode()
+
+return f"basic {auth_string}"
+    
 # =========================
 # WEBEX FUNCTIONS
 # =========================
@@ -167,6 +177,72 @@ def get_iss_location(api_key):
         f"ISS location: latitude {lat}, longitude {lon}. Nearby place: {place}" 
     )
 
+# ========================
+# ASTRONOMY API (ADDITIONAL TASK)
+# ========================
+def get_sky_info(city, weather_api_key, astronomy_auth):
+
+    location = get_city_coordinates(city, weather_api_key)
+    if not location:
+        return "city not found."
+
+    latitude = location ["lat"]
+    longitude = location ["lon"] 
+
+    now = datetime.now() #gets the current date and time from the device being used and stores that as now
+    date = now.strftime("%Y-%m-%d") #strftime converts the date into a string and the format '%y-%m-%d' seperates it into year, month, and day
+    current_time = now.strftime("%H:%M:%S") #strftime does the same thing but with the time and the format '%H:%M:%S' seperates it into hour, minute, and second
+    #these values are needed later on in the code to give to the API so it knows what information to give from the time and date given
+    
+    url = "https://api.astronomyapi.com/api/v2/bodies/positions" #astronomy API endpoint 
+    headers = {"Authorization": astronomy_auth} #tells the API who is making the request, authorization tells the API authentication details are included, and astronomy_auth contains the authentication from the configurations
+    params = {
+        "latitude": latitude, 
+        "longitude": longitude,
+        "elevation": 0,
+        "from_date": date,
+        "to_date": date,
+        "time": current_time,
+        "output": "rows" #requests the response in a rows format
+    } #these set parameters tells the API what information you want from it which includes the coordinates, locations height above sea level, the start and end date of the calculate, and the time for the calculation
+  
+    response = requests.get(url, headers=headers, params=params) #sends a GET request to the API using the url to find the destination, the headers to authenticate the requst, and the params include the information requested
+
+    if response.status_code == 403:
+        return "Astronomy API authentication failed. Check your Application ID and Secret." #if the authentication is incorrect it is due to code 403, so this provides an explaination for a common issue
+    elif response.status_code != 200:
+        return f"Unable to retrieve astronomy data. Status code: {response.status_code}" #checks the response code to see if the API has been successful or not
+
+    data = response.json() #converts the APIs data (JSON) into python so the program can understand the data
+    rows = data.get("data", {}).get("rows", [])  #looks for 'data' key and uses an empty dictionary {} if it doesnt exist, then looks for 'rows' inside the dictionary and uses and empty list [] if it dosent exist
+    if not rows: #checks if the rows are empty
+        return "No astronomy information was returned."  #if there are no rows, this message is returned
+
+    message = f"Sky information for {city}:\n" #this is the format for the message printed by the bot, \n gives a new line for new information
+
+    for row in rows: #for loop allows the program to process each row of the APIs response one at a time
+        body = row.get("body", {}) #uses a get request to get data about the celestial body (e.g. star, moon, plant)
+        positions = row.get("positions", []) #uses the same request to get a list of positins related to the body from the API
+
+        if not positions:
+            continue #if there are no positions the loop is skipped as to not create an infinite loop
+
+        position = positions[0] #select the fist item in the positions list
+
+        name = body.get("name", "unknown") #gets the name of the celestial body, if the key is missing ("name") it defaults to "unknown"
+
+        horizontal = position.get("position", {}).get("horizontal", {}) #extrats the 2 values (position and horizontal) from the JSON data
+        altitude = horizontal.get("altitude", {}).get("degrees", "N/A") 
+        azimuth = horizontal.get("azimuth", {}).get("degrees", "N/A") #looks for the further data and if it is missing N/A is used instead
+
+        message += ( #adds the information to the existing message from line 221 using += 
+            f"{name}: "
+            f"Altitude {altitude}°, "
+            f"Azimuth {azimuth}°\n" 
+        )
+
+    return message #returns the finished message with all the data added after getting it from the JSON data
+
 # =========================
 # MAIN BOT LOGIC
 # =========================
@@ -223,6 +299,24 @@ def main():
             elif message_text.lower() == "/iss":
                 send_message(token, room_id, get_iss_location(weather_key)) #checks to see if the user typed /iss and if so, the bot runs 'get_iss_location(weather_key)' and sends the result to Webex
 
+            elif message_text.lower().startswith("/sky"):#checks to see if the message type starts with /sky (a correct command)
+                parts = message_text.split(maxsplit=1) #splits message into parts and creates a list out of the 2 items
+
+                if len(parts) < 2: #checks to see if there are 2 items in the list
+                    send_message(token, room_id, "Usage: /sky <city>") #sends a prompt to enter a city after /sky if only /sky is intered
+                else:
+                    city = parts[1] #stores index 1, the second item in the list, as the variable city
+
+                    send_message( #calls the function from the webex functions
+                        token, #provides the webex access token
+                        room_id, #checks for a room_id
+                        get_sky_info( #calls the function for the astronomy API
+                            city, #provides the city entered
+                            weather_key, #provides the weather api key as this is used to get the lon and lat
+                            astronomy_auth #provides the astronomy api key
+                        )
+                    )#
+            
             elif message_text.lower() == "/quit":
                 send_message(token, room_id, "AstroBot shutting down.")
                 break
@@ -231,7 +325,6 @@ def main():
                 send_message(token, room_id, "Unknown command. Use /help")
 
         time.sleep(5)
-
 
 if __name__ == '__main__':
     main()
