@@ -25,7 +25,7 @@ def get_webex_token():
         return "Bearer YOUR_WEBEX_TOKEN"
 
 def get_api_key(prompt, hardcoded_key):
-    choice = input{f"use hard-coded {prompt}? (y/n): ").lower() #asks user if they are using a hard-coded key or not
+    choice = input({f"use hard-coded {prompt}? (y/n): ").lower() #asks user if they are using a hard-coded key or not
     return input(f"Enter your {prompt}: ")  #gets API key if not using hard-coded, 'return' sends the inputed value back to where the function is called
     if choice == "n" else hardcoded_key #checks to see if the hard-coded key is being used or not and returns the hardcoded-key if it is
 
