@@ -40,9 +40,9 @@ This investigation sheet helps you gather key technical information from the thr
 | Criteria | Details |
 |---------|---------|
 | Provider used (Choose one) | **LocationIQ / Mapbox/ OpenWeatherMap other -provide detail** |
-| API Base URL | `_______________________________` |
-| Endpoint for geocoding | `_______________________________` |
-| Endpoint for reverse geocoding | `_______________________________` |
+| API Base URL | `` |
+| Endpoint for geocoding | `` |
+| Endpoint for reverse geocoding | `https://api.openweathermap.org/geo/1.0/reverse` |
 | Authentication method | `_______________________________` |
 | Required query parameters | `_______________________________` |
 | Sample request with latitude/longitude | `_______________________________` |
@@ -60,9 +60,9 @@ This investigation sheet helps you gather key technical information from the thr
 | Criteria | Details |
 |---------|---------|
 | API Provider (Choose one) | **OpenWeather, OpenWeatherMap (or other – provide details)** |
-| API Base URL | `_______________________________` |
-| Endpoint for current weather | `_______________________________` |
-| Authentication method | `_______________________________` |
+| API Base URL | `https://api.openweathermap.org` |
+| Endpoint for current weather | `https://api.openweathermap.org/data/2.5/weather` |
+| Authentication method | `API_key` |
 | Required query parameters | `_______________________________` |
 | Sample JSON response (formatted example) |  
 ```
