@@ -26,10 +26,17 @@ This investigation sheet helps you gather key technical information from the thr
 | Criteria | Details |
 |---------|---------|
 | API Base URL | `http://api.open-notify.org/iss-now.json` |
-| Endpoint for current ISS location | `` |
+| Endpoint for current ISS location | `get http://api.open-notify.org/iss-now.json` |
 | Sample response format (example JSON) |  
 ```
-
+{
+    "message": "success",
+    "timestamp": 1720000000,
+    "iss_position": {
+        "latitude": "51.5074",
+        "longitude": "-0.1278"
+    }
+}
 ```
 |
 
@@ -39,16 +46,27 @@ This investigation sheet helps you gather key technical information from the thr
 
 | Criteria | Details |
 |---------|---------|
-| Provider used (Choose one) | **LocationIQ / Mapbox/ OpenWeatherMap other -provide detail** |
-| API Base URL | `` |
-| Endpoint for geocoding | `` |
+| Provider used (Choose one) | 'OpenWeatherMap' |
+| API Base URL | `https://api.openweathermap.org` |
+| Endpoint for geocoding | `https://api.openweathermap.org/geo/1.0/direct` |
 | Endpoint for reverse geocoding | `https://api.openweathermap.org/geo/1.0/reverse` |
-| Authentication method | `_______________________________` |
-| Required query parameters | `_______________________________` |
-| Sample request with latitude/longitude | `_______________________________` |
+| Authentication method | `API key using the 'appid' parameter` |
+| Required query parameters | `direct:q, limit, appid. reverse: lat,lon, limit, appid` |
+| Sample request with latitude/longitude | `requests.get("https://api.openweathermap.org/geo/1.0/reverse"), params ={"lat": 51.5074, "lon": -0.1278, "limit": 1, "appid": api_key} ` |
 | Sample JSON response (formatted example) |  
 ```
-
+[
+    {
+        "name": "London",
+        "local_names": {
+            "en": "London"
+        },
+        "lat": 51.5074,
+        "lon": -0.1278,
+        "country": "GB",
+        "state": "England"
+    }
+]
 ```
 |
 
@@ -59,14 +77,31 @@ This investigation sheet helps you gather key technical information from the thr
 
 | Criteria | Details |
 |---------|---------|
-| API Provider (Choose one) | **OpenWeather, OpenWeatherMap (or other – provide details)** |
+| API Provider (Choose one) | 'OpenWeatherMap' |
 | API Base URL | `https://api.openweathermap.org` |
 | Endpoint for current weather | `https://api.openweathermap.org/data/2.5/weather` |
-| Authentication method | `API_key` |
-| Required query parameters | `_______________________________` |
+| Authentication method | `api key using the appid paramter` |
+| Required query parameters | `lat, lon,units, appid` |
 | Sample JSON response (formatted example) |  
 ```
-
+{
+    "name": "London",
+    "sys": {
+        "country": "GB"
+    },
+    "main": {
+        "temp": 15.5,
+        "humidity": 72
+    },
+    "weather": [
+        {
+            "description": "light rain"
+        }
+    ],
+    "wind": {
+        "speed": 4.1
+    }
+}
 ```
 |
 
@@ -76,7 +111,7 @@ This investigation sheet helps you gather key technical information from the thr
 
 | Criteria | Details |
 |---------|---------|
-| Library used | `_______________________________` |
+| Library used | `time` |
 | Function used to convert epoch | `_______________________________` |
 | Sample code to convert timestamp |  
 ```  
@@ -90,14 +125,38 @@ This investigation sheet helps you gather key technical information from the thr
 
 | Criteria | Details |
 |---------|---------|
-| API Provider | '_________' |
-| API Base URL | `_______________________________` |
-| Endpoint | `_______________________________` |
-| Authentication method | `_______________________________` |
-| Required query parameters | `_______________________________` |
+| API Provider | 'Astronomy API' |
+| API Base URL | `https://api.astronomyapi.com` |
+| Endpoint | `https://api.astronomyapi.com/api/v2/bodies/position` |
+| Authentication method | `HTTP Basic using API application ID and secret, encoded using import base64` |
+| Required query parameters | `latitude, longitude, elevation, from_date, to_date, time, output` |
 | Sample JSON response (formatted example) |  
 ```
-
+{
+    "data": {
+        "rows": [
+            {
+                "body": {
+                    "name": "Sun"
+                },
+                "positions": [
+                    {
+                        "position": {
+                            "horizontal": {
+                                "altitude": {
+                                    "degrees": "25.5"
+                                },
+                                "azimuth": {
+                                    "degrees": "180.2"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
 ```
 |
 
