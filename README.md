@@ -206,9 +206,9 @@ Provide a short example based on your implementation
 
 | Component   | Description and Example (Relate to your Bot) |
 |------------|----------------------------------|
-| **Model**  |  |
-| **View**   |  |
-| **Controller** |  |
+| **Model**  | Handles the data and API interactions. get_weather(), get_iss_location(), get_city_coordinates(), and get_sky_info() are all functions that retrieve data from different APIs and process the it via extracting and storing it in variables in dictionarys before being returned to the user. e.g. get_weather() gets the city that was entereds coordinates out of a stored dictionary returned by get_city_coordinates() and sends them to the OpenWeatherMap API to get the current weather information. |
+| **View**   | Responsible for what the user sees. In my Astrobot, this is the messages sent to the Webex room using send_message(). e.g. when a user enters /weather london the code converts the JSON data using 'data = json.dump(data)' to a readable message before sending this back |
+| **Controller** | handles what the user inputs into the program and decides what actions need to be performed. This is done by main() as it checks the commands used (/weather, /sky, /iss, /help, and /quit) before calling the appropriate function from the model |
 
 ---
 
