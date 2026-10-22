@@ -166,7 +166,7 @@ def get_iss_location(api_key):
     lat = data["iss_position"]["latitude"]
     lon = data["iss_position"]["longitude"] #gets the ISS latitude and longitude from the JSON data provided by the API
 
-    timestamp = data["timestamp"] 
+    timestamp = time.time() #gets current epoch timestamp
     human_time = time.ctime(timestamp) #converts epoch timestamp into readable time
 
     location = reverse_geocode(lat, lon, api_key) #sends ISS coordinates to reverse-geocoding function
@@ -194,8 +194,8 @@ def get_sky_info(city, weather_api_key, astronomy_auth):
 
     timestamp = time.time() #gets current epock timestap
     human_time = time.ctime(timestamp) #converts timestamp into readable time
-    date = now.strftime("%Y-%m-%d", time.localtime(timestamp)) #strftime converts the date into a string and the format '%y-%m-%d' seperates it into year, month, and day
-    current_time = now.strftime("%H:%M:%S", time.localtime(timestamp)) #strftime does the same thing but with the time and the format '%H:%M:%S' seperates it into hour, minute, and second
+    date = time.strftime("%Y-%m-%d", time.localtime(timestamp)) #strftime converts the date into a string and the format '%y-%m-%d' seperates it into year, month, and day
+    current_time = time.strftime("%H:%M:%S", time.localtime(timestamp)) #strftime does the same thing but with the time and the format '%H:%M:%S' seperates it into hour, minute, and second
     #these values are needed later on in the code to give to the API so it knows what information to give from the time and date given
     
     url = "https://api.astronomyapi.com/api/v2/bodies/positions" #astronomy API endpoint 
