@@ -112,12 +112,9 @@ This investigation sheet helps you gather key technical information from the thr
 | Criteria | Details |
 |---------|---------|
 | Library used | `time` |
-| Function used to convert epoch | `_______________________________` |
-| Sample code to convert timestamp |  
-```  
-```
-|
-| Output (human-readable time) | `_______________________________` |
+| Function used to convert epoch | `time.ctime()` |
+| Sample code to convert timestamp | `time.ctime(timestamp)` |
+| Output (human-readable time) | `Mon Oct 19 12:00:00 2026` |
 
 ---
 
@@ -180,7 +177,9 @@ Explain how the client–server model applies to your AstroBot:
 
 
 ####  Security Considerations: (3 marks )
-- Consider but not limiting to secure handling of API keys and tokens, API rate limiting, and Input validation (e.g., handling user commands safely), include examples from code where necessary to illustrate.
+- Secure Handling of API tokens and keys: the bot gets the webex token, weather API key and Astronomy API secret using get_webex_token(), get_api_key(), and get_astronomy_auth() aswell as giving the option for hard-coded credentials. In real life, credentials shoupld be stored securely and should never been shared.
+- Api rate limiting: the code uses time.sleep(5) to wait 5 seconds between message checks so constant messages arent being sent. this stops http code 429 which would mean to many requests.
+- input validation: the code checks the commands in different ways such as for /weather and /sky it makes sure there are 2 words. if the message sent is invalid it returns an error message suggesting to use /help.
 
 ---
 
@@ -188,14 +187,19 @@ Explain how the client–server model applies to your AstroBot:
 
 Explain how REST APIs are used in your AstroBot: 
 
-- Describe how HTTP methods (GET, POST) are used  
-- Explain how your bot interacts with APIs (Webex, Weather, ISS, Geocoding)  
-- Describe how JSON responses are received and processed  
-
-Note: Relate your explanation directly to your code for higher grade. 
+- HTTP methods used: GET = retrieves information from an API. e.g. get_weather() gets current weather data from OpenWeatherMap using requests.get(). POST = sends data to an API. e.g. send_message() sends a message to the Astrobots webex room using requests.post()
+-  Astrobot interacting with APIs: 
+webex API = get_rooms() gets available rooms, get_latest_message() retrieves the message inputed by the user, send_message() posts a response to the room.
+weather API = get_weather() gets current weather conditions which include the temperature, humidity, and wind speed.
+ISS API = gets_iss_location() gets the international space stations current lat and lon and epoch timestamp from open notify.
+geocoding API = get_city_coordinates() converts the city that has been inputted into a lat and a lon which is then converted into a nearby place name by reverse_geocode().
+astronomy API = get_sky_info() gets data about the positions of astronomical bodies in the sky (their altitude adn azimuth) using the lat and lon from get_city_coordinates() .
+- JSON response processing: the code converts the JSON response into python language such as dictionaries and lists using response.json(). I then extracted these values from the response and formated them into a readable response e.g. 'return (f"ISS location: latitude {lat}, longitude {lon}. Nearby place: {place}") .
+ 
 
 #### Security Considerations: (2 marks)
-- Check response status codes, Handling invalid or unexpected API responses, Avoiding excessive API calls
+- Checking status codes: the Astrobot checks if requests retun a successfull HTTP status code (200) and if not it returns an error message preventing unsuccessful responses being prrocessed. e.g. get_weather() uses 'response.status_code != 200'.
+- handling unexpected responses and avoiding excessive API calls: the Astrobot checks for empty messages before continuing aswell as waiting 5 seconds between attempts using 'time.sleep(5)'.
 
 ---
 
