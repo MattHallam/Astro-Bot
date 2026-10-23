@@ -232,13 +232,6 @@ My solution could be improved in the future by adding more astronomy information
 
 ---
 
-<img width="1912" height="1022" alt="astrobot ss" src="https://github.com/user-attachments/assets/ab36836a-4db0-4a45-991a-166193f932c6" />
-
-<img width="1889" height="521" alt="test python blocked" src="https://github.com/user-attachments/assets/5c3c37fd-c8cf-43aa-8684-4034bb5c8ab5" />
-
-
----
-
  **Tip:** Link your answers directly to your code and examples for higher marks.
 ### Notes
 
