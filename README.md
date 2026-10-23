@@ -12,7 +12,7 @@ This investigation sheet helps you gather key technical information from the thr
 | Criteria | Details |
 |---------|---------|
 | API Base URL | `https://webexapis.com/v1` |
-| Authentication Method | `An authorization HTTP header is used to identify the requesting user. The header must include an access token which may be personal, a bot token or an Authorisation token from an integration` |
+| Authentication Method | `An authorization HTTP header is used to identify the requesting user. The header must include an access token which may be personal, a bot token, or an Authorisation token from an integration` |
 | Endpoint to list rooms | `GET https://webexapis.com/v1/rooms` |
 | Endpoint to get messages | `GET https://webexapis.com/v1/messages>` |
 | Endpoint to send message | `POST https://webexapis.com/v1/messages` |
@@ -220,19 +220,27 @@ Provide a short example based on your implementation
 
 Reflect on your AstroBot (400 words):
 
-- How effective is your bot in meeting the Astronomy Club’s needs?  
-- What design decisions worked well?  
-- What challenges did you face when integrating APIs?  
-- What security risks did you identify and how were they handled?  
-- How could your solution be improved in the future?  
+Overall, I believe my Astrobot is effective in meeting the Astronomy club's needs due to it providing members with a simple method to obtain astronomical information by simple typing requests into the webex chat room. The bot accepts simple commands (/weather, /iss, and /sky) in order to access things such as the weather in a provided location, the location of the international space station aswell as the location of planets (including the sun, moon and pluto) in our solar system in the sky above a certain city entered which is the main purpose of the club (stargazing events). The Astrobot is made even simpler with the addition of the /help command which tells the users how to use the bot in order to obtain requested information.
+
+One Design decision that worked well was ensuring every function is loosely coupled so that dependencies of functions on other functions is minimised allowing for failures to be clearly identified such as certain HTTP errors or authentication errors. This will allow quick and easy fixes so that the astronomy club can effectively use the Astrobot for their required tasks. Using dictionarys to process JSON data was also an effective design choice for the code itself as the JSON data (how APIs return information) is structured heavily using dictionaries.
+
+One of the main challenges I faced was integrating the extension API (Astronomy API) into my code. This was because I struggled to figure out how to retrieve to JSON data from the API so i could format a message to the user. To solve this i used a 'for' loop to process each row of the data one at a time by firstly extracting the name of the celestrial body from the dictionary inside of the first dictionary and then extracting the list of positions related to that celestial body. Another challenge within the Astronomy API was the error handling as the API request sometimes failed due to an incorrect ID and/or secret.
+
+One of the main security risks was the leaking of API keys, secrets, and tokens as the Astrobot uses these to get data from the related API. In order to not expose these publicily the codes should never be shared or uploded to github and should be stored saftely elsewhere only to be used during testing.
+
+My solution could be improved in the future by adding more astronomy information such as meteor showers, galaxies in current view, or sunrise times/sunset times. These would allow the Astronomy club to greater study and understand how astronomical bodies and different planetary features work. Input validation could also be improved in the configuratoin functions due to the bot sometimes failing if an incorrect message is sent into the hard-coded option. 
 
 ---
 
  **Tip:** Link your answers directly to your code and examples for higher marks.
 ### Notes
 
-- Use official documentation for accuracy (e.g. developer.webex.com, locationiq.com or Mapbox, open-notify.org or other ISS API).
-- Be prepared to explain your findings to your instructor or demo how you retrieved them using tools like Postman, Curl, or Python scripts.
+-'https://developer.webex.com/messaging/docs/authentication' = provided information about webex authentication
+-'https://openweathermap.org/api/one-call-4?collection=one_call_api' = provided information about the openweathermap API including direct and reverse geocoding
+-'http://open-notify.org/Open-Notify-API/ISS-Location-Now/' = provided information about ISS API 
+-'https://docs.astronomyapi.com/' = provided information about the extension astronomy API and how to authenticate it.
+-'https://www.epochconverter.com/' = provided information about how to use the epoch to human time converter
+-'https://www.geeksforgeeks.org/python/how-to-convert-python-dictionary-to-json/' = helped me understand how to convert JSON data to pyhton dictionaries
 
 ---
 
